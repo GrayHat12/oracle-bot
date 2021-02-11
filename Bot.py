@@ -108,6 +108,36 @@ class Bot:
         customPrint("Opened Module", "INFO")
         return True
 
+    def openLearningModule3(self):
+        while True:
+            try:
+                self.driver.find_elements_by_xpath(
+                    "//a[@class='tiles-title']")[2].click()
+                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
+                a = None
+                for anchor in listoanchors:
+                    anchor."""
+                break
+            except:
+                time.sleep(TIMEOUT)
+        customPrint("Opened Module", "INFO")
+        return True
+
+    def openLearningModuleN(self, n=0):
+        while True:
+            try:
+                self.driver.find_elements_by_xpath(
+                    "//a[@class='tiles-title']")[n].click()
+                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
+                a = None
+                for anchor in listoanchors:
+                    anchor."""
+                break
+            except:
+                time.sleep(TIMEOUT)
+        customPrint("Opened Module", "INFO")
+        return True
+
     def getFirstIncomplete(self):
         while True:
             try:
@@ -115,7 +145,7 @@ class Bot:
                     "collapsible-content")
 
                 collapsibles.pop(0)
-                #collapsibles.pop(0)
+                # collapsibles.pop(0)
                 customPrint("Got Collapsables", "INFO")
                 for collapsible in collapsibles:
                     items = None
