@@ -126,8 +126,8 @@ class Bot:
     def openLearningModuleN(self, n=0):
         while True:
             try:
-                self.driver.find_elements_by_xpath(
-                    "//a[@class='tiles-title']")[n].click()
+                self.driver.find_elements_by_css_selector(
+                    'h4[class="title"]>a')[n].click()
                 """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
                 a = None
                 for anchor in listoanchors:
