@@ -31,7 +31,7 @@ def customPrint(text, texttype="MESSAGE"):
 
 class Bot:
     def __init__(self):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
         self.driver.get(
             "https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
         self.parent_handle = self.driver.current_window_handle
@@ -141,8 +141,8 @@ class Bot:
     def getFirstIncomplete(self):
         while True:
             try:
-                collapsibles = self.driver.find_element("class",
-                    "learning-path--detail__section rendered")
+                collapsibles = self.driver.find_elements_by_class_name(
+                    "collapsible-content")
 
                 collapsibles.pop(0)
                 # collapsibles.pop(0)
@@ -150,20 +150,26 @@ class Bot:
                 for collapsible in collapsibles:
                     items = None
                     try:
-                        items = collapsible.find_element("class",
-                            "card")
+                        items = collapsible.find_elements_by_class_name(
+                            "tiles-col-l")
                     except:
                         continue
                     for item in items:
-                        completed = item.find_element_by_class_name(
-                            "course-badges")
-                        if completed :
-                            print("RETURN")
-                            return item
-                        
+                        iconOne = item.find_element_by_class_name(
+                            "tiles-col-l-l")
+                        textOne = item.find_element_by_class_name(
+                            "tiles-col-l-r")
+                        completedIndicatorIcon = iconOne.find_element_by_tag_name(
+                            "span").find_element_by_tag_name("span")
+                        completedIndicatorText = textOne.find_element_by_tag_name(
+                            "span")
+                        customPrint(completedIndicatorText.text)
+                        if completedIndicatorIcon.get_attribute("data-title") == "Completed" or completedIndicatorText.text.lower().find("quiz") > -1 or completedIndicatorText.text.lower().find("exam") > -1:
+                            customPrint("Already completed or quiz", "INFO")
+                            continue
                         else:
-                            print("Skipped")
-                            pass
+                            customPrint("Found Incomplete", "INFO")
+                            return item
                 return None
             except Exception as err:
                 print(err)

@@ -1,10 +1,10 @@
 from Bot import Bot
 
 bot = Bot()
-n=input()
-#bot.login()
-#bot.openChannel()
-#bot.openLearningModuleN(2)
+
+bot.login()
+bot.openChannel()
+bot.openLearningModuleN(2)
 while True:
     incomplete = bot.getFirstIncomplete()
     if incomplete:
