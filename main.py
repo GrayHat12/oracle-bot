@@ -12,6 +12,7 @@ while True:
         bot.play()
         bot.goBackToLearningPath()
     else:
+        pass
         break
 
 bot.close()
