@@ -1,6 +1,6 @@
 from selenium import webdriver
 import time
-from config import *
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 
 
 HEADER = '\033[95m'
@@ -196,18 +196,32 @@ class Bot:
         customPrint("Closed All Other Handles", "INFO")
 
     def play(self):
+        print("ulla vandhachu")
         while True:
             try:
-                parent_window = self.driver.current_window_handle
-                p = self.driver.find_element_by_tag_name("a")
-                p.click()
-                time.sleep(READ_TIME)
-                self.closeAllOtherHandles()
-                break
-            except:
+                section = self.driver.find_element_by_class_name("section")
+                # Find the div with the specified class
+                main_div = section.find_element_by_class_name("main")
+                course_div = main_div.find_element_by_class_name("course-details__intro")
+                but_div= course_div.find_element_by_class_name("cta")
+                
+            
+                # Find the anchor tag with the class "play" within the detail div
+                play_button = but_div.find_element_by_tag_name("a")
+
+                if play_button:
+                    play_button.click()
+                    customPrint("Clicked on play button", "SUCCESS")
+                    time.sleep(READ_TIME)
+                    self.closeAllOtherHandles()
+                    break
+                else:
+                    print("Play button not found within the detail div.")
+            except Exception as e:
+                print("Exception occurred:", e)
                 time.sleep(TIMEOUT)
-            customPrint("Completed a module", "SUCCESS")
         return True
+
 
     def goBackToLearningPath(self):
         customPrint("Going back to learning path", "INFO")
