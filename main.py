@@ -2,9 +2,9 @@ from Bot import Bot
 
 bot = Bot()
 
-bot.login()
-bot.openChannel()
-bot.openLearningModuleN(2)
+#bot.login()
+#bot.openChannel()
+#bot.openLearningModuleN(2)
 while True:
     incomplete = bot.getFirstIncomplete()
     if incomplete:
@@ -15,3 +15,4 @@ while True:
         break
 
 bot.close()
+#OA1535666953

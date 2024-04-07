@@ -142,7 +142,7 @@ class Bot:
         while True:
             try:
                 collapsibles = self.driver.find_elements_by_class_name(
-                    "collapsible-content")
+                    "learning-path--detail__section")
 
                 collapsibles.pop(0)
                 # collapsibles.pop(0)
@@ -151,24 +151,16 @@ class Bot:
                     items = None
                     try:
                         items = collapsible.find_elements_by_class_name(
-                            "tiles-col-l")
+                            "card")
                     except:
                         continue
                     for item in items:
-                        iconOne = item.find_element_by_class_name(
-                            "tiles-col-l-l")
-                        textOne = item.find_element_by_class_name(
-                            "tiles-col-l-r")
-                        completedIndicatorIcon = iconOne.find_element_by_tag_name(
-                            "span").find_element_by_tag_name("span")
-                        completedIndicatorText = textOne.find_element_by_tag_name(
-                            "span")
-                        customPrint(completedIndicatorText.text)
-                        if completedIndicatorIcon.get_attribute("data-title") == "Completed" or completedIndicatorText.text.lower().find("quiz") > -1 or completedIndicatorText.text.lower().find("exam") > -1:
-                            customPrint("Already completed or quiz", "INFO")
-                            continue
-                        else:
-                            customPrint("Found Incomplete", "INFO")
+                        try:
+                            completed = item.find_element_by_class_name("course-badges")
+                            print(completed)
+                            pass
+                        except:
+                            print("RETURN")
                             return item
                 return None
             except Exception as err:
@@ -179,7 +171,13 @@ class Bot:
         customPrint("Completing One", "INFO")
         while True:
             try:
-                item.find_element_by_tag_name("a").click()
+                quiz=item.find_element_by_class_name("title")
+                quiz_detect=quiz.text
+                print(quiz_detect)
+                if "Quiz" in quiz_detect:
+                    break
+                box=item.find_element_by_tag_name("img").click()
+                print("img clicked")
                 break
             except:
                 time.sleep(TIMEOUT)
@@ -200,9 +198,8 @@ class Bot:
         while True:
             try:
                 parent_window = self.driver.current_window_handle
-                p = self.driver.find_element_by_tag_name("p")
-                a = p.find_element_by_tag_name("a")
-                a.click()
+                p = self.driver.find_element_by_tag_name("a")
+                p.click()
                 time.sleep(READ_TIME)
                 self.closeAllOtherHandles()
                 break
