@@ -167,6 +167,7 @@ class Bot:
                 print(err)
                 time.sleep(TIMEOUT)
 
+
     def completeOne(self, item):
         customPrint("Completing One", "INFO")
         while True:
