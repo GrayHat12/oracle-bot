@@ -213,15 +213,37 @@ class Bot:
                     play_button.click()
                     customPrint("Clicked on play button", "SUCCESS")
                     time.sleep(READ_TIME)
-                    self.closeAllOtherHandles()
-                    break
+                    self.switchTabs()
+                    
                 else:
                     print("Play button not found within the detail div.")
             except Exception as e:
                 print("Exception occurred:", e)
                 time.sleep(TIMEOUT)
         return True
+    def switchTabs(self):
+        
+            try:
+             new_tab_handle = self.driver.window_handles[-1]
+             self.driver.switch_to.window(new_tab_handle)
+             print("switched")
+             self.driver.save_screenshot("sc.png")
+            except:
+                print("not switched")
 
+    def nextPress(self):
+        while True:
+            try:
+                mainTab = self.driver.find_element_by_xpath("main-container")
+                n1 = mainTab.find_element_by_class_name("universal-control-panel")
+                n2 = n1.find_element_by_class_name("universal-control-panel__container")
+                n3= n2.find_element_by_class_name("universal-control-panel__button_right-arrow")
+                
+                n3.click()
+                time.sleep(READ_TIME)
+
+            except:
+                print("button not found")
 
     def goBackToLearningPath(self):
         customPrint("Going back to learning path", "INFO")
