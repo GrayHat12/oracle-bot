@@ -1,5 +1,5 @@
 import time
-from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -32,7 +32,6 @@ def customPrint(text, texttype="MESSAGE"):
 
 
 class Bot:
-    visited = []
     def __init__(self):
         self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
         self.driver.get(
@@ -177,7 +176,6 @@ class Bot:
             try:
                 quiz=item.find_element_by_class_name("title")
                 quiz_detect=quiz.text
-                self.visited.append(quiz_detect)
                 print(quiz_detect)
                 if "Quiz" in quiz_detect:
                     break
@@ -244,17 +242,16 @@ class Bot:
                     try:
                         
                                 next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
-                            # Click the next button
+                           
                                 next_button.click()
                                 print("Next button found.")
                     except Exception as e:
+                        self.driver.close()
+                        self.driver.save_screenshot("test.png")
                         print("Failed to find or click the next button:", e)
 
             except:
-                with open("visited.txt", 'w') as file:
-                    for item in self.visited:
-                        file.write("%s\n" % item)
-
+                print("kanoom")
                 
     def switchTabs(self):
         
