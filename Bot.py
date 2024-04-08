@@ -1,5 +1,5 @@
 import time
-from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -238,23 +238,15 @@ class Bot:
                 self.driver.switch_to.frame(iframe)
 
 # Now, find the next button using the specified classes
-                try:
-                    time.sleep(20)
-                    next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
-                    # Click the next button
-                    next_button.click()
-                    print("Next button found.")
-                except Exception as e:
-                    print("Failed to find or click the next button:", e)
-
-                    #wait = WebDriverWait(self.driver, 20)
-                    #self.driver.switch_to.frame(1)
-# Find the next button using the specified classes
-                    #next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
-
-# Click the next button
-                    #next_button.click()
-                    print("Amukiten")
+                while True :
+                    try:
+                        
+                                next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+                            # Click the next button
+                                next_button.click()
+                                print("Next button found.")
+                    except Exception as e:
+                        print("Failed to find or click the next button:", e)
 
             except:
                 print("kanoom")
