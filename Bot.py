@@ -1,5 +1,5 @@
 import time
-from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -188,7 +188,7 @@ class Bot:
                     break
                 box=item.find_element_by_tag_name("img").click()
                 print("img clicked")
-                return True
+                break
             except:
                 time.sleep(TIMEOUT)
         return True
@@ -253,7 +253,7 @@ class Bot:
                                 next_button.click()
                                 print("Next button found.")
                     except Exception as e:
-                        self.driver.close()
+                        self.goBackToLearningPath()
                         self.driver.save_screenshot("test.png")
                         print("Failed to find or click the next button:", e)
 
