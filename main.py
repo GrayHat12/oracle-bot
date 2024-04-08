@@ -4,7 +4,7 @@ bot = Bot()
 
 #bot.login()
 #bot.openChannel()
-#bot.openLearningModuleN(2)
+#bot.openLearningModuleN(2)s
 while True:
     incomplete = bot.getFirstIncomplete()
     if incomplete:
