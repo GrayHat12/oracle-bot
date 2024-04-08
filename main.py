@@ -10,10 +10,10 @@ while True:
     if incomplete:
         quizSkip=bot.completeOne(incomplete)
         if quizSkip:
-            pass
-        else:
             bot.play()
             bot.goBackToLearningPath()
+        else:
+            pass
     else:
         break
 
