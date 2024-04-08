@@ -34,6 +34,7 @@ def customPrint(text, texttype="MESSAGE"):
 
 
 class Bot:
+    visited=[]
     def __init__(self):
         self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
         self.driver.get(
@@ -164,6 +165,11 @@ class Bot:
                     for item in items:
                         try:
                             completed = item.find_element_by_class_name("course-badges")
+                            quiz=item.find_element_by_class_name("title")
+                            if completed:
+                                pass
+                            elif quiz in self.visited:
+                                pass
                             print(completed)
                             pass
                         except:
@@ -182,13 +188,14 @@ class Bot:
                 quiz=item.find_element_by_class_name("title")
                 quiz_detect=quiz.text
                 print(quiz_detect)
+                
                 if quiz_detect in self.visited:
-                    break
+                    return
                 if "Quiz" in quiz_detect:
-                    break
+                    return
                 box=item.find_element_by_tag_name("img").click()
                 print("img clicked")
-                break
+                return True
             except:
                 time.sleep(TIMEOUT)
         return True
@@ -258,7 +265,10 @@ class Bot:
                         print("Failed to find or click the next button:", e)
 
             except:
-                print("kanoom")
+                with open("visited.txt", 'w') as file:
+                    for item in self.visited:
+                        file.write("%s\n" % item)
+
                 
     def switchTabs(self):
         
