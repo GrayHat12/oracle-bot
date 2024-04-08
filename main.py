@@ -1,5 +1,5 @@
 from Bot import Bot
-
+n= input("Login oracle academy and Open the Course and type (Yes/Y/y) to continue : ")
 bot = Bot()
 
 #bot.login()
