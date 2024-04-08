@@ -8,9 +8,12 @@ bot = Bot()
 while True:
     incomplete = bot.getFirstIncomplete()
     if incomplete:
-        bot.completeOne(incomplete)
-        bot.play()
-        bot.goBackToLearningPath()
+        quizSkip=bot.completeOne(incomplete)
+        if quizSkip:
+            pass
+        else:
+            bot.play()
+            bot.goBackToLearningPath()
     else:
         break
 
