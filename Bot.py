@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
+
 HEADER = '\033[95m'
 OKBLUE = '\033[94m'
 OKCYAN = '\033[96m'
@@ -37,6 +39,9 @@ class Bot:
         self.driver.get(
             "https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
         self.parent_handle = self.driver.current_window_handle
+        with open("visited.txt", 'r') as file:
+            for line in file:
+                self.visited.append(line.strip())
 
     def login(self):
         customPrint("Filling Username", "INFO")
@@ -177,6 +182,8 @@ class Bot:
                 quiz=item.find_element_by_class_name("title")
                 quiz_detect=quiz.text
                 print(quiz_detect)
+                if quiz_detect in self.visited:
+                    break
                 if "Quiz" in quiz_detect:
                     break
                 box=item.find_element_by_tag_name("img").click()
