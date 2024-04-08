@@ -1,7 +1,9 @@
-from selenium import webdriver
 import time
-from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
-
+from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 HEADER = '\033[95m'
 OKBLUE = '\033[94m'
@@ -205,15 +207,21 @@ class Bot:
                 course_div = main_div.find_element_by_class_name("course-details__intro")
                 but_div= course_div.find_element_by_class_name("cta")
                 
-            
+            except Exception as e:
+                print("Exception occurred1:", e)
+                time.sleep(TIMEOUT)
+            try:
                 # Find the anchor tag with the class "play" within the detail div
                 play_button = but_div.find_element_by_tag_name("a")
-
+                
                 if play_button:
                     play_button.click()
                     customPrint("Clicked on play button", "SUCCESS")
                     time.sleep(READ_TIME)
                     self.switchTabs()
+
+                    
+
                     
                 else:
                     print("Play button not found within the detail div.")
@@ -221,6 +229,36 @@ class Bot:
                 print("Exception occurred:", e)
                 time.sleep(TIMEOUT)
         return True
+    def nextPPress(self):
+
+        while True:
+            try:
+                wait = WebDriverWait(self.driver, 20)
+                iframe = wait.until(EC.presence_of_element_located((By.ID, "content-iframe")))
+                self.driver.switch_to.frame(iframe)
+
+# Now, find the next button using the specified classes
+                try:
+                    time.sleep(20)
+                    next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+                    # Click the next button
+                    next_button.click()
+                    print("Next button found.")
+                except Exception as e:
+                    print("Failed to find or click the next button:", e)
+
+                    #wait = WebDriverWait(self.driver, 20)
+                    #self.driver.switch_to.frame(1)
+# Find the next button using the specified classes
+                    #next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+
+# Click the next button
+                    #next_button.click()
+                    print("Amukiten")
+
+            except:
+                print("kanoom")
+                
     def switchTabs(self):
         
             try:
@@ -228,6 +266,7 @@ class Bot:
              self.driver.switch_to.window(new_tab_handle)
              print("switched")
              self.driver.save_screenshot("sc.png")
+             self.nextPPress()
             except:
                 print("not switched")
 
