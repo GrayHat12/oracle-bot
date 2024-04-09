@@ -1,5 +1,5 @@
 import time
-from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -149,56 +149,55 @@ class Bot:
     def getFirstIncomplete(self):
         while True:
             try:
-                collapsibles = self.driver.find_elements_by_class_name(
-                    "learning-path--detail__section")
-
-                collapsibles.pop(0)
-                # collapsibles.pop(0)
+                collapsibles = self.driver.find_elements_by_class_name("learning-path--detail__section")
+                collapsibles.pop(0)  # Assuming you want to skip the first collapsible
                 customPrint("Got Collapsables", "INFO")
                 for collapsible in collapsibles:
-                    items = None
-                    try:
-                        items = collapsible.find_elements_by_class_name(
-                            "card")
-                    except:
-                        continue
+                    items = collapsible.find_elements_by_class_name("card")
                     for item in items:
                         try:
                             completed = item.find_element_by_class_name("course-badges")
-                            quiz=item.find_element_by_class_name("title")
+                            quiz = item.find_element_by_class_name("title")
+                            print("Found item:", quiz.text)
                             if completed:
-                                pass
-                            elif quiz in self.visited:
-                                pass
-                            print(completed)
-                            pass
-                        except:
-                            print("RETURN")
-                            return item
-                return None
+                                print("Item completed, skipping...")
+                                continue
+                            elif quiz.text in self.visited:
+                                print("Item already visited, skipping...")
+                                continue
+                            else:
+                                # Assuming "Quiz" is in the title of quiz items
+                                if "Quiz" in quiz.text:
+                                    print("Skipping quiz, moving to the next item...")
+                                    continue
+                                print("Returning item:", quiz.text)
+                                return item
+                        except Exception as e:
+                            print("Error:", e)
+                            continue
             except Exception as err:
-                print(err)
+                print("Error:", err)
                 time.sleep(TIMEOUT)
-
 
     def completeOne(self, item):
         customPrint("Completing One", "INFO")
-        while True:
-            try:
-                quiz=item.find_element_by_class_name("title")
-                quiz_detect=quiz.text
-                print(quiz_detect)
-                
-                if quiz_detect in self.visited:
-                    return
-                if "Quiz" in quiz_detect:
-                    return
-                box=item.find_element_by_tag_name("img").click()
-                print("img clicked")
-                return True
-            except:
-                time.sleep(TIMEOUT)
-        return True
+        try:
+            quiz = item.find_element_by_class_name("title")
+            quiz_detect = quiz.text
+            print(quiz_detect)
+            
+            if quiz_detect in self.visited:
+                return False
+            if "Quiz" in quiz_detect:
+                return False
+            box = item.find_element_by_tag_name("img").click()
+            print("img clicked")
+            return True
+        except Exception as e:
+            print("Error:", e)
+            time.sleep(TIMEOUT)
+            return False
+
 
     def closeAllOtherHandles(self):
         handles = self.driver.window_handles
