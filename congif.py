@@ -5,3 +5,4 @@ URL = r"https://myacademy.oracle.com/lmt/xlr8login.login?site=oa" #login page ur
 
 TIMEOUT = 1
 READ_TIME = 5
+   

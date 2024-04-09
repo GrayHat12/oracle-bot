@@ -36,11 +36,16 @@ def customPrint(text, texttype="MESSAGE"):
 class Bot:
     visited=[]
     def __init__(self):
+        #self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        #self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
     # Connect to the existing Chrome session
         options = webdriver.ChromeOptions()
         options.debugger_address = "localhost:9222"  # Use the port you opened Chrome with
-
         self.driver = webdriver.Chrome(options=options)
+
+
+
+
 
         self.parent_handle = self.driver.current_window_handle
         with open("visited.txt", 'r') as file:
@@ -65,15 +70,30 @@ class Bot:
                         continue
                     for item in items:
                         try:
-                            completed = item.find_element_by_class_name("course-badges")
-                            quiz=item.find_element_by_tag_name("h4")
-                            if completed:
+                            comp=False
+                            try:
+                                completed = item.find_element_by_class_name("course-badges")
+                                comp=True
+                            except:
+                                comp=False
+                            quiz=item.find_element_by_tag_name("a")
+
+                            quizzer=quiz.find_element_by_tag_name("span").text
+                            print(quizzer)
+                            if comp==True:
+                                comp=False
+                                print("completed badge!!")
                                 pass
                             elif quiz in self.visited:
+                                print("in visited")
+                                pass
+                            elif "Quiz" in quizzer:
+                                print("in quiz")
                                 pass
                             print(completed)
                             pass
-                        except:
+                        except Exception as e:
+                            print(e)
                             print("RETURN")
                             return item
                 return None
@@ -90,10 +110,12 @@ class Bot:
                 global quiz_detect
                 quiz_detect=quiz.text
                 print(quiz_detect)
-                
+                self.visited.append(quiz_detect)
                 if quiz_detect in self.visited:
+                    print("in visited")
                     return
                 if "Quiz" in quiz_detect:
+                    print("is quiz")
                     self.visited.append(quiz_detect)
                     return
                 box=item.find_element_by_tag_name("img").click()
