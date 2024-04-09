@@ -1,5 +1,5 @@
 import time
-from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -77,19 +77,21 @@ class Bot:
             except Exception as err:
                 print(err)
                 time.sleep(TIMEOUT)
-
+    quiz_detect=""
 
     def completeOne(self, item):
         customPrint("Completing One", "INFO")
         while True:
             try:
                 quiz=item.find_element_by_class_name("title")
+                global quiz_detect
                 quiz_detect=quiz.text
                 print(quiz_detect)
                 
                 if quiz_detect in self.visited:
                     return
                 if "Quiz" in quiz_detect:
+                    self.visited.append(quiz_detect)
                     return
                 box=item.find_element_by_tag_name("img").click()
                 print("img clicked")
@@ -158,11 +160,13 @@ class Bot:
                                 next_button.click()
                                 print("Next button found.")
                     except Exception as e:
+                        self.visited.append()
                         self.goBackToLearningPath()
                         self.driver.save_screenshot("test.png")
                         print("Failed to find or click the next button:", e)
 
             except:
+                self.visited.append(quiz_detect)
                 with open("visited.txt", 'w') as file:
                     for item in self.visited:
                         file.write("%s\n" % item)
@@ -186,15 +190,7 @@ class Bot:
         self.driver.refresh()
         time.sleep(5)
         return True
-        while True:
-            try:
-                course = self.driver.find_element_by_id("userCourseLPSContent")
-                item = course.find_element_by_class_name(
-                    "tiles-layout.table-tiles.three-col-tiles.clearboth")
-                item.click()
-                break
-            except:
-                time.sleep(TIMEOUT)
+
 
     def close(self):
         customPrint("Closed Bot", "INFO")
