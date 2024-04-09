@@ -1,5 +1,5 @@
 import time
-from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -36,12 +36,11 @@ def customPrint(text, texttype="MESSAGE"):
 class Bot:
     visited=[]
     def __init__(self):
-        #self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-        #self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
+        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
     # Connect to the existing Chrome session
-        options = webdriver.ChromeOptions()
-        options.debugger_address = "localhost:9222"  # Use the port you opened Chrome with
-        self.driver = webdriver.Chrome(options=options)
+        #options = webdriver.ChromeOptions()
+        #self.driver = webdriver.Chrome(options=options)
 
 
 
@@ -89,9 +88,10 @@ class Bot:
                                 pass
                             elif "Quiz" in quizzer:
                                 print("in quiz")
+                            
                                 pass
-                            print(completed)
-                            pass
+                            else:
+                                self.completeOne(item)
                         except Exception as e:
                             print(e)
                             print("RETURN")
@@ -111,9 +111,7 @@ class Bot:
                 quiz_detect=quiz.text
                 print(quiz_detect)
                 self.visited.append(quiz_detect)
-                if quiz_detect in self.visited:
-                    print("in visited")
-                    return
+                
                 if "Quiz" in quiz_detect:
                     print("is quiz")
                     self.visited.append(quiz_detect)
