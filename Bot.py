@@ -36,9 +36,12 @@ def customPrint(text, texttype="MESSAGE"):
 class Bot:
     visited=[]
     def __init__(self):
-        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-        self.driver.get(
-            "https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
+    # Connect to the existing Chrome session
+        options = webdriver.ChromeOptions()
+        options.debugger_address = "localhost:9222"  # Use the port you opened Chrome with
+
+        self.driver = webdriver.Chrome(options=options)
+
         self.parent_handle = self.driver.current_window_handle
         with open("visited.txt", 'r') as file:
             for line in file:
@@ -155,10 +158,10 @@ class Bot:
                 while True :
                     try:
                         
-                                next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+                        next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
                            
-                                next_button.click()
-                                print("Next button found.")
+                        next_button.click()
+                        print("Next button found.")
                     except Exception as e:
                         self.visited.append()
                         self.goBackToLearningPath()
