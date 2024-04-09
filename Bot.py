@@ -106,19 +106,10 @@ class Bot:
         customPrint("Completing One", "INFO")
         while True:
             try:
-                quiz=item.find_element_by_class_name("title")
-                global quiz_detect
-                quiz_detect=quiz.text
-                print(quiz_detect)
-                self.visited.append(quiz_detect)
                 
-                if "Quiz" in quiz_detect:
-                    print("is quiz")
-                    self.visited.append(quiz_detect)
-                    return
                 box=item.find_element_by_tag_name("img").click()
                 print("img clicked")
-                return True
+                self.play()
             except:
                 time.sleep(TIMEOUT)
         return True
