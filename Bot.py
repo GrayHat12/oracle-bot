@@ -66,7 +66,7 @@ class Bot:
                     for item in items:
                         try:
                             completed = item.find_element_by_class_name("course-badges")
-                            quiz=item.find_element_by_class_name("title")
+                            quiz=item.find_element_by_tag_name("h4")
                             if completed:
                                 pass
                             elif quiz in self.visited:
@@ -136,7 +136,7 @@ class Bot:
                     customPrint("Clicked on play button", "SUCCESS")
                     time.sleep(READ_TIME)
                     self.switchTabs()
-
+                    self.nextPPress()
                     
 
                     
@@ -158,9 +158,25 @@ class Bot:
                 while True :
                     try:
                         
-                        next_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
-                           
-                        next_button.click()
+                        max_wait_time = 10  # seconds
+
+# Start time for measuring elapsed time
+                        start_time = time.time()
+
+                        while True:
+                            try:
+                                # Check if the next button is clickable
+                                next_button = WebDriverWait(self.driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+                                # If found, click on it and exit the loop
+                                next_button.click()
+                                break
+                            except (self.NoSuchElementException, TimeoutError):
+                                # If the button is not found within 1 second or if it's not clickable, check elapsed time
+                                elapsed_time = time.time() - start_time
+                                # If the elapsed time exceeds the maximum wait time, exit the loop
+                                if elapsed_time > max_wait_time:
+                                    print("Button not found within the maximum wait time. Proceeding without waiting.")
+                                    break
                         print("Next button found.")
                     except Exception as e:
                         self.visited.append()
