@@ -44,160 +44,59 @@ class Bot:
             for line in file:
                 self.visited.append(line.strip())
 
-    def login(self):
-        customPrint("Filling Username", "INFO")
-        # fill username
-        while True:
-            try:
-                self.driver.find_element_by_id(
-                    "inputUsername").send_keys(USERNAME)
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Filled Username", "INFO")
-        customPrint("Filling Password", "INFO")
-        # fill password
-        while True:
-            try:
-                self.driver.find_element_by_id(
-                    "inputPassword").send_keys(PASSWORD)
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Filled Password", "INFO")
-        # click on signin
-        while True:
-            try:
-                self.driver.find_element_by_class_name(
-                    "primary.btn.login").click()
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Next", "SUCCESS")
-        return True
-
-    def openChannel(self):
-        while True:
-            try:
-                self.driver.find_element_by_class_name("tiles-content").click()
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Opened Channel", "INFO")
-        return True
-
-    def openLearningModule1(self):
-        while True:
-            try:
-                self.driver.find_element_by_xpath(
-                    "//a[@class='tiles-title']").click()
-                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
-                a = None
-                for anchor in listoanchors:
-                    anchor."""
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Opened Module", "INFO")
-        return True
-
-    def openLearningModule2(self):
-        while True:
-            try:
-                self.driver.find_elements_by_xpath(
-                    "//a[@class='tiles-title']")[1].click()
-                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
-                a = None
-                for anchor in listoanchors:
-                    anchor."""
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Opened Module", "INFO")
-        return True
-
-    def openLearningModule3(self):
-        while True:
-            try:
-                self.driver.find_elements_by_xpath(
-                    "//a[@class='tiles-title']")[2].click()
-                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
-                a = None
-                for anchor in listoanchors:
-                    anchor."""
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Opened Module", "INFO")
-        return True
-
-    def openLearningModuleN(self, n=0):
-        while True:
-            try:
-                self.driver.find_elements_by_css_selector(
-                    'h4[class="title"]>a')[n].click()
-                """listoanchors = self.driver.find_elements_by_xpath("//a[@class='tiles-title']")
-                a = None
-                for anchor in listoanchors:
-                    anchor."""
-                break
-            except:
-                time.sleep(TIMEOUT)
-        customPrint("Opened Module", "INFO")
-        return True
-
     def getFirstIncomplete(self):
         while True:
             try:
-                collapsibles = self.driver.find_elements_by_class_name("learning-path--detail__section")
-                collapsibles.pop(0)  # Assuming you want to skip the first collapsible
+                collapsibles = self.driver.find_elements_by_class_name(
+                    "learning-path--detail__section")
+
+                collapsibles.pop(0)
+                # collapsibles.pop(0)
                 customPrint("Got Collapsables", "INFO")
                 for collapsible in collapsibles:
-                    items = collapsible.find_elements_by_class_name("card")
+                    items = None
+                    try:
+                        items = collapsible.find_elements_by_class_name(
+                            "card")
+                    except:
+                        continue
                     for item in items:
                         try:
                             completed = item.find_element_by_class_name("course-badges")
-                            quiz = item.find_element_by_class_name("title")
-                            print("Found item:", quiz.text)
+                            quiz=item.find_element_by_class_name("title")
                             if completed:
-                                print("Item completed, skipping...")
-                                continue
-                            elif quiz.text in self.visited:
-                                print("Item already visited, skipping...")
-                                continue
-                            else:
-                                # Assuming "Quiz" is in the title of quiz items
-                                if "Quiz" in quiz.text:
-                                    print("Skipping quiz, moving to the next item...")
-                                    continue
-                                print("Returning item:", quiz.text)
-                                return item
-                        except Exception as e:
-                            print("Error:", e)
-                            continue
+                                pass
+                            elif quiz in self.visited:
+                                pass
+                            print(completed)
+                            pass
+                        except:
+                            print("RETURN")
+                            return item
+                return None
             except Exception as err:
-                print("Error:", err)
+                print(err)
                 time.sleep(TIMEOUT)
+
 
     def completeOne(self, item):
         customPrint("Completing One", "INFO")
-        try:
-            quiz = item.find_element_by_class_name("title")
-            quiz_detect = quiz.text
-            print(quiz_detect)
-            
-            if quiz_detect in self.visited:
-                return False
-            if "Quiz" in quiz_detect:
-                return False
-            box = item.find_element_by_tag_name("img").click()
-            print("img clicked")
-            return True
-        except Exception as e:
-            print("Error:", e)
-            time.sleep(TIMEOUT)
-            return False
-
+        while True:
+            try:
+                quiz=item.find_element_by_class_name("title")
+                quiz_detect=quiz.text
+                print(quiz_detect)
+                
+                if quiz_detect in self.visited:
+                    return
+                if "Quiz" in quiz_detect:
+                    return
+                box=item.find_element_by_tag_name("img").click()
+                print("img clicked")
+                return True
+            except:
+                time.sleep(TIMEOUT)
+        return True
 
     def closeAllOtherHandles(self):
         handles = self.driver.window_handles
@@ -280,19 +179,6 @@ class Bot:
             except:
                 print("not switched")
 
-    def nextPress(self):
-        while True:
-            try:
-                mainTab = self.driver.find_element_by_xpath("main-container")
-                n1 = mainTab.find_element_by_class_name("universal-control-panel")
-                n2 = n1.find_element_by_class_name("universal-control-panel__container")
-                n3= n2.find_element_by_class_name("universal-control-panel__button_right-arrow")
-                
-                n3.click()
-                time.sleep(READ_TIME)
-
-            except:
-                print("button not found")
 
     def goBackToLearningPath(self):
         customPrint("Going back to learning path", "INFO")
