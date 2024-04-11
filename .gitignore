@@ -4,3 +4,4 @@ config.py
 *.exe
 congif.py
 congif.py
+visited.txt
