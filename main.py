@@ -19,5 +19,4 @@ while True:
     else:
         break
 
-bot.close()
 #OA1535666953

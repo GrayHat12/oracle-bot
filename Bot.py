@@ -38,12 +38,12 @@ class Bot:
     default_tab=""
     visited=[]
     def __init__(self):
-        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-        self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
+        #self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        #self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
     # Connect to the existing Chrome session
-       # options = webdriver.ChromeOptions()
-        #options.debugger_address = "localhost:9222"
-        #self.driver = webdriver.Chrome(options=options)
+        options = webdriver.ChromeOptions()
+        options.debugger_address = "localhost:4444"
+        self.driver = webdriver.Chrome(options=options)
 
 
 
@@ -91,6 +91,9 @@ class Bot:
                                 continue
                             elif "Quiz" in quizzer:
                                 print("in quiz")
+                                continue
+                            elif "Exam" in quizzer:
+                                print("is exam")
                             
                                 continue
                             raise Exception
@@ -173,7 +176,7 @@ class Bot:
                 self.driver.switch_to.frame(iframe)
                 while True :
                     try:  
-                        max_wait_time = 10 
+                        max_wait_time = 5 
                         elapsed_time=0
                         
                         if runner:
@@ -243,14 +246,14 @@ class Bot:
     def goBackToLearningPath(self):
         customPrint("Going back to learning path", "INFO")
         self.driver.close()
-        time.sleep(3)
+        time.sleep(2)
         self.defaultSwitch()
-        time.sleep(4)
+        time.sleep(2)
         self.driver.back()
         print("Backed up")
-        time.sleep(5)
+        time.sleep(2)
         self.driver.refresh()
-        time.sleep(5)
+        time.sleep(4)
         return True
 
 
