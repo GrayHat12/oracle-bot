@@ -11,7 +11,8 @@ while True:
         quizSkip=bot.completeOne(incomplete)
         print(quizSkip)
         if quizSkip==True:
-            bot.play()
+            bot.play()  
+            bot.goBackToLearningPath()
         else:
             
             pass

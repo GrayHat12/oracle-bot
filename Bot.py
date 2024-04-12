@@ -197,7 +197,6 @@ class Bot:
                                         print("wait check")
                                         runner=False
                                         
-                                        self.goBackToLearningPath()
                                         self.driver.save_screenshot("test.png")
                                         print("Failed to find or click the next button:", e)
                                         return
@@ -247,7 +246,7 @@ class Bot:
         time.sleep(3)
         self.defaultSwitch()
         time.sleep(4)
-        self.driver.navigate().back()
+        self.driver.back()
         print("Backed up")
         time.sleep(5)
         self.driver.refresh()
