@@ -1,5 +1,5 @@
 import time
-from config import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
+from congif import DRIVER_PATH,USERNAME,PASSWORD,URL,TIMEOUT,READ_TIME
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -35,14 +35,15 @@ def customPrint(text, texttype="MESSAGE"):
 
 
 class Bot:
+    default_tab=""
     visited=[]
     def __init__(self):
-        #self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-        #self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
+        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
     # Connect to the existing Chrome session
-        options = webdriver.ChromeOptions()
-        options.debugger_address = "localhost:9222"
-        self.driver = webdriver.Chrome(options=options)
+       # options = webdriver.ChromeOptions()
+        #options.debugger_address = "localhost:9222"
+        #self.driver = webdriver.Chrome(options=options)
 
 
 
@@ -84,16 +85,15 @@ class Bot:
                             if comp==True:
                                 comp=False
                                 print("completed badge!!")
-                                pass
+                                continue
                             elif quiz in self.visited:
                                 print("in visited")
-                                pass
+                                continue
                             elif "Quiz" in quizzer:
                                 print("in quiz")
                             
-                                pass
-                            else:
-                                self.completeOne(item)
+                                continue
+                            raise Exception
                         except Exception as e:
                             print(e)
                             print("RETURN")
@@ -111,10 +111,9 @@ class Bot:
                 
                 box=item.find_element_by_tag_name("img").click()
                 print("img clicked")
-                self.play()
+                return True
             except:
                 time.sleep(TIMEOUT)
-        return True
 
     def closeAllOtherHandles(self):
         handles = self.driver.window_handles
@@ -160,15 +159,18 @@ class Bot:
             except Exception as e:
                 print("Exception occurred:", e)
                 time.sleep(TIMEOUT)
+                break
         return True
     def nextPPress(self):
-
+        runner=True
+        flag = 0
         while True:
+            if flag!=0:
+                break
             try:
                 wait = WebDriverWait(self.driver, 20)
                 iframe = wait.until(EC.presence_of_element_located((By.ID, "content-iframe")))
                 self.driver.switch_to.frame(iframe)
-                runner=True
                 while True :
                     try:  
                         max_wait_time = 10 
@@ -194,30 +196,33 @@ class Bot:
                                         self.visited.append(self.quiz_detect)
                                         print("wait check")
                                         runner=False
-                                        break
+                                        
                                         self.goBackToLearningPath()
                                         self.driver.save_screenshot("test.png")
                                         print("Failed to find or click the next button:", e)
-                                        print("Next button found.")
+                                        return
+                                        
                         else:
                             break
                     except Exception as e:
                         self.visited.append()
-                        self.goBackToLearningPath()
-                        self.driver.save_screenshot("test.png")
-                        print("Failed to find or click the next button:", e)
+                        
                         break
 
             except:
                 self.visited.append(self.quiz_detect)
+                flag = 1
                 with open("visited.txt", 'w') as file:
                     for item in self.visited:
                         file.write("%s\n" % item)
-
+                        print("Breaked")
+                break
                 
     def switchTabs(self):
         
             try:
+                global default_tab
+                default_tab=self.driver.window_handles[0]
                 new_tab_handle = self.driver.window_handles[-1]
                 self.driver.switch_to.window(new_tab_handle)
                 print("switched")
@@ -225,13 +230,25 @@ class Bot:
                 self.nextPPress()
             except:
                 print("not switched")
+    def defaultSwitch(self):
+        try : 
+            
+            self.driver.switch_to.window(default_tab)
+            self.driver.save_screenshot("ssss.png")
+            print("switvhed to default tab")
+        except:
+            print("Cannot switch")
+
 
 
     def goBackToLearningPath(self):
         customPrint("Going back to learning path", "INFO")
         self.driver.close()
         time.sleep(3)
-        self.driver.back()
+        self.defaultSwitch()
+        time.sleep(4)
+        self.driver.navigate().back()
+        print("Backed up")
         time.sleep(5)
         self.driver.refresh()
         time.sleep(5)

@@ -9,9 +9,9 @@ while True:
     incomplete = bot.getFirstIncomplete()
     if incomplete:
         quizSkip=bot.completeOne(incomplete)
-        if quizSkip:
+        print(quizSkip)
+        if quizSkip==True:
             bot.play()
-            bot.goBackToLearningPath()
         else:
             
             pass
