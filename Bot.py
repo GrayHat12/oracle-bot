@@ -53,7 +53,10 @@ class Bot:
         with open("visited.txt", 'r') as file:
             for line in file:
                 self.visited.append(line.strip())
-
+    def appendCompleted(self,string):
+        with open("visited.txt","a") as visited_file:
+            self.visited.append(string)
+            visited_file.write(string+"\n")
     def getFirstIncomplete(self):
         while True:
             try:
@@ -85,21 +88,25 @@ class Bot:
                             if comp==True:
                                 comp=False
                                 print("completed badge!!")
+                                self.appendCompleted(quizzer)
                                 continue
-                            elif quiz in self.visited:
+                            elif quizzer in self.visited:
                                 print("in visited")
                                 continue
                             elif "Quiz" in quizzer:
+                                self.appendCompleted(quizzer)
                                 print("in quiz")
                                 continue
                             elif "Exam" in quizzer:
                                 print("is exam")
+                                self.appendCompleted(quizzer)
                             
                                 continue
                             raise Exception
                         except Exception as e:
                             print(e)
                             print("RETURN")
+                            self.appendCompleted(quizzer)
                             return item
                 return None
             except Exception as err:
@@ -187,6 +194,7 @@ class Bot:
                                     # If found, click on it and exit the loop
                                     next_button.click()
                                     break
+                                
                                 except:
                                     # If the button is not found within 1 second or if it's not clickable, check elapsed time
                                     elapsed_time +=1 
@@ -196,8 +204,6 @@ class Bot:
                                         break
                                     else:
                                         print("wrong part")
-                                        self.visited.append(self.quiz_detect)
-                                        print("wait check")
                                         runner=False
                                         
                                         self.driver.save_screenshot("test.png")
