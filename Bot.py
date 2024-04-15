@@ -87,31 +87,29 @@ class Bot:
                             print(quizzer)
                             if comp==True:
                                 comp=False
-                                print("completed badge!!")
+                                customPrint("completed badge found skipping","INFO")
                                 self.appendCompleted(quizzer)
                                 continue
                             elif quizzer in self.visited:
-                                print("in visited")
+                                customPrint("VISITED Skipping","INFO")
                                 continue
                             elif "Quiz" in quizzer:
+                                customPrint("QUIZ Skipping","INFO")
                                 self.appendCompleted(quizzer)
                                 print("in quiz")
                                 continue
                             elif "Exam" in quizzer:
-                                print("is exam")
+                                customPrint("EXAM Skipping","INFO")
                                 self.appendCompleted(quizzer)
                             
                                 continue
                             raise Exception
                         except Exception as e:
-                            print(e)
-                            print("RETURN")
                             self.appendCompleted(quizzer)
                             
                             return item
                 return None
             except Exception as err:
-                print(err)
                 time.sleep(TIMEOUT)
     quiz_detect=""
 
@@ -138,7 +136,6 @@ class Bot:
         customPrint("Closed All Other Handles", "INFO")
 
     def play(self):
-        print("ulla vandhachu")
         while True:
             try:
                 time.sleep(3)
