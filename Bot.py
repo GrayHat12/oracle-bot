@@ -207,14 +207,14 @@ class Bot:
                                     elapsed_time +=1 
                                     # If the elapsed time exceeds the maximum wait time, exit the loop
                                     if elapsed_time > max_wait_time:
-                                        print("Button not found within the maximum wait time. Proceeding without waiting.")
+                                        customPrint("Button not found within the maximum wait time. Proceeding without waiting.","INFO")
                                         break
                                     else:
-                                        print("wrong part")
+                                        
                                         runner=False
                                         
-                                        self.driver.save_screenshot("test.png")
-                                        print("Failed to find or click the next button:", e)
+                                        
+                                        customPrint("Failed to find or click the next button:", "INFO")
                                         return
                                         
                         else:
@@ -230,7 +230,7 @@ class Bot:
                 with open("visited.txt", 'w') as file:
                     for item in self.visited:
                         file.write("%s\n" % item)
-                        print("Breaked")
+                        
                 break
 
     def switchTabs(self):
@@ -240,8 +240,7 @@ class Bot:
                 default_tab=self.driver.window_handles[0]
                 new_tab_handle = self.driver.window_handles[-1]
                 self.driver.switch_to.window(new_tab_handle)
-                print("switched")
-                self.driver.save_screenshot("sc.png")
+                customPrint("switched tabs","INFO")
                 self.nextPPress()
             except:
                 print("not switched")
@@ -249,10 +248,9 @@ class Bot:
         try : 
             
             self.driver.switch_to.window(default_tab)
-            self.driver.save_screenshot("ssss.png")
-            print("switvhed to default tab")
+            customPrint("switched to default tab","SUCCESS")
         except:
-            print("Cannot switch")
+            customPrint("Cannot switch","ERROR")
 
 
 
@@ -263,7 +261,6 @@ class Bot:
         self.defaultSwitch()
         time.sleep(2)
         self.driver.back()
-        print("Backed up")
         time.sleep(2)
         self.driver.refresh()
         time.sleep(4)
