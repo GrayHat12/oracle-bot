@@ -38,12 +38,12 @@ class Bot:
     default_tab=""
     visited=[]
     def __init__(self):
-        #self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-        #self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
+        self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        self.driver.get("https://myacademy.oracle.com/lmt/xlr8login.login?site=oa")
     # Connect to the existing Chrome session
-        options = webdriver.ChromeOptions()
-        options.debugger_address = "localhost:4444"
-        self.driver = webdriver.Chrome(options=options)
+        #options = webdriver.ChromeOptions()
+        #options.debugger_address = "localhost:4444"
+        #self.driver = webdriver.Chrome(options=options)
 
 
 
@@ -120,7 +120,7 @@ class Bot:
             try:
                 
                 box=item.find_element_by_tag_name("img").click()
-                print("img clicked")
+                customPrint("Image clicked","SUCCESS")
                 return True
             except:
                 time.sleep(TIMEOUT)
@@ -148,7 +148,7 @@ class Bot:
                 but_div= course_div.find_element_by_class_name("cta")
                 
             except Exception as e:
-                print("Exception occurred1:", e)
+                customPrint("Error Occured in Finding Play Button","ERROR")
                 time.sleep(TIMEOUT)
             try:
                 # Find the anchor tag with the class "play" within the detail div
@@ -165,9 +165,9 @@ class Bot:
 
                     
                 else:
-                    print("Play button not found within the detail div.")
+                    customPrint("Play button not found within the detail div","ERROR")
             except Exception as e:
-                print("Exception occurred:", e)
+                customPrint("Exception occurred:", e,"ERROR")
                 time.sleep(TIMEOUT)
                 break
         return True
