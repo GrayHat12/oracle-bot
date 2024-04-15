@@ -5,3 +5,5 @@ config.py
 congif.py
 congif.py
 visited.txt
+*.png
+*.jpg
