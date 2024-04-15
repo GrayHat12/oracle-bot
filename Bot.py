@@ -84,7 +84,7 @@ class Bot:
                             quiz=item.find_element_by_tag_name("a")
 
                             quizzer=quiz.find_element_by_tag_name("span").text
-                            print(quizzer)
+                            customPrint(quizzer,"MESSAGE")
                             if comp==True:
                                 comp=False
                                 customPrint("completed badge found skipping","INFO")
@@ -96,7 +96,6 @@ class Bot:
                             elif "Quiz" in quizzer:
                                 customPrint("QUIZ Skipping","INFO")
                                 self.appendCompleted(quizzer)
-                                print("in quiz")
                                 continue
                             elif "Exam" in quizzer:
                                 customPrint("EXAM Skipping","INFO")
@@ -119,7 +118,7 @@ class Bot:
             try:
                 
                 box=item.find_element_by_tag_name("img").click()
-                customPrint("Image clicked","SUCCESS")
+                customPrint("Entered the course","SUCCESS")
                 return True
             except:
                 time.sleep(TIMEOUT)
@@ -243,7 +242,7 @@ class Bot:
                 customPrint("switched tabs","INFO")
                 self.nextPPress()
             except:
-                print("not switched")
+                customPrint("Cannot switch","ERROR")
     def defaultSwitch(self):
         try : 
             
