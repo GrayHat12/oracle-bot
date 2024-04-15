@@ -107,6 +107,7 @@ class Bot:
                             print(e)
                             print("RETURN")
                             self.appendCompleted(quizzer)
+                            
                             return item
                 return None
             except Exception as err:
@@ -159,7 +160,7 @@ class Bot:
                     customPrint("Clicked on play button", "SUCCESS")
                     time.sleep(READ_TIME)
                     self.switchTabs()
-                    self.nextPPress()
+                    self.nextPress()
                     break
                     
 
@@ -171,7 +172,7 @@ class Bot:
                 time.sleep(TIMEOUT)
                 break
         return True
-    def nextPPress(self):
+    def nextPress(self):
         runner=True
         flag = 0
         while True:
@@ -189,11 +190,20 @@ class Bot:
                         if runner:
                             while True:
                                 try:
-                                    # Check if the next button is clickable
-                                    next_button = WebDriverWait(self.driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
-                                    # If found, click on it and exit the loop
-                                    next_button.click()
-                                    break
+                                    try:
+                                        # Check if the next button is clickable
+                                        next_button = WebDriverWait(self.driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".universal-control-panel__button_next, .universal-control-panel__button_right-arrow")))
+                                        # If found, click on it and exit the loop
+
+                                        next_button.click()
+                                        break
+                                    except:
+                                         # Check if the next button is clickable
+                                        next_button = WebDriverWait(self.driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".uikit-primary-button_next, .uikit-primary-button_next navigation-controls__button_next")))
+                                        # If found, click on it and exit the loop
+                                        
+                                        next_button.click()
+                                        break
                                 
                                 except:
                                     # If the button is not found within 1 second or if it's not clickable, check elapsed time
@@ -225,7 +235,7 @@ class Bot:
                         file.write("%s\n" % item)
                         print("Breaked")
                 break
-                
+
     def switchTabs(self):
         
             try:
