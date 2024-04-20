@@ -1,3 +1,9 @@
+## ⚠️ No Longer Maintained
+
+Consider using [Philotheephilix/oracle-bot](https://github.com/Philotheephilix/oracle-bot) for the currently maintained version.
+
+Thanks [@Philotheephilix](https://github.com/Philotheephilix)
+
 ## ORACLE BOT
 
 A bot to automate completion of `Database Programming with SQL 3rd Y Class Channel` courses namely : 
